@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://o64ll6y5xc3o"]
+
+[ext_resource type="PackedScene" uid="uid://dsk76btoe2tws" path="res://3D/enemy_ufoGreen.glb" id="1_4dugo"]
+[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="1_32ukl"]
+[ext_resource type="Script" path="res://Nodes/Health.cs" id="3_orrlp"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gfj26"]
+height = 0.331951
+radius = 0.245672
+
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("agent")]
+collision_layer = 2
+script = ExtResource("1_32ukl")
+speed = 50.0
+agent = NodePath("NavigationAgent3D")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_gfj26")
+
+[node name="Visuals" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.162552, 0)
+
+[node name="enemy_ufoGreen" parent="Visuals" instance=ExtResource("1_4dugo")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.1
+target_desired_distance = 0.4
+avoidance_enabled = true
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_orrlp")
+
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="ReachedTarget"]
+[connection signal="OnDamageTaken" from="Health" to="." method="OnDamageTaken"]
