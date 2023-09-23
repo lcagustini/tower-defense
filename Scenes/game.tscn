@@ -1,17 +1,20 @@
-[gd_scene load_steps=11 format=3 uid="uid://c2vrh4sptnu32"]
+[gd_scene load_steps=15 format=3 uid="uid://c2vrh4sptnu32"]
 
 [ext_resource type="PackedScene" uid="uid://dco8of3a1dx4v" path="res://3D/tile_cornerSquare.glb" id="1_glyyv"]
 [ext_resource type="PackedScene" uid="uid://d2y4g8nd32kjh" path="res://3D/tile_endSpawn.glb" id="2_bieg0"]
 [ext_resource type="PackedScene" uid="uid://db2tnw8pnu7yl" path="res://3D/tile_straight.glb" id="3_8buwl"]
 [ext_resource type="Script" path="res://Scripts/EnemySpawn.cs" id="4_t1qvh"]
 [ext_resource type="PackedScene" uid="uid://o64ll6y5xc3o" path="res://Prefabs/enemy.tscn" id="5_kmxfw"]
+[ext_resource type="Script" path="res://Scripts/Input.cs" id="6_m8tle"]
+[ext_resource type="PackedScene" uid="uid://0njne00qcypp" path="res://Prefabs/tower.tscn" id="7_mr3dc"]
+[ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="8_c3voc"]
 
 [sub_resource type="Environment" id="Environment_canif"]
 ambient_light_energy = 0.1
 tonemap_mode = 1
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_jrn58"]
-vertices = PackedVector3Array(0.397045, 1.49891, 0.597244, 0.597045, 1.49891, 0.597244, 0.697045, 1.49891, -1.30276, 0.297045, 1.49891, -1.40276, 1.19704, 0.498906, -1.20276, 0.797045, 0.498906, -1.20276, 0.797045, 0.498906, 0.697244, 1.19704, 0.498906, 1.19724, -1.20296, 0.498906, 1.19724, -0.802955, 0.498906, 1.19724, -0.702955, 0.498906, -0.802756, -1.20296, 0.498906, -1.20276, 1.19704, 0.498906, 1.19724, 0.797045, 0.498906, 0.697244, 0.297045, 0.498906, 0.797244, -0.202955, 0.498906, 1.19724, -0.702955, 0.498906, -0.802756, -0.202955, 0.498906, -0.702756, 0.197045, 0.498906, -1.20276, -1.20296, 0.498906, -1.20276, -0.202955, 0.498906, -0.702756, -0.202955, 0.498906, 1.19724, 0.297045, 0.498906, 0.797244, 0.197045, 0.498906, -1.20276, -0.702955, 1.49891, 1.29724, -0.302955, 1.49891, 1.39724, -0.402955, 1.49891, -0.602756, -0.602955, 1.49891, -0.602756)
+vertices = PackedVector3Array(0.397046, 1.49891, 0.597245, 0.597047, 1.49891, 0.597245, 0.697047, 1.49891, -1.30275, 0.297047, 1.49891, -1.40276, 1.19705, 0.498906, -1.20275, 0.797046, 0.498906, -1.20275, 0.797046, 0.498906, 0.697245, 1.19705, 0.498906, 1.19725, -1.20295, 0.498906, 1.19725, -0.802954, 0.498906, 1.19725, -0.702954, 0.498906, -0.802755, -1.20295, 0.498906, -1.20275, 1.19705, 0.498906, 1.19725, 0.797046, 0.498906, 0.697245, 0.297047, 0.498906, 0.797245, -0.202953, 0.498906, 1.19725, -0.702954, 0.498906, -0.802755, -0.202953, 0.498906, -0.702755, 0.197047, 0.498906, -1.20275, -1.20295, 0.498906, -1.20275, -0.202953, 0.498906, -0.702755, -0.202953, 0.498906, 1.19725, 0.297047, 0.498906, 0.797245, 0.197047, 0.498906, -1.20275, -0.702954, 1.49891, 1.29724, -0.302953, 1.49891, 1.39725, -0.402954, 1.49891, -0.602755, -0.602953, 1.49891, -0.602755)
 polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(13, 12, 14), PackedInt32Array(14, 12, 15), PackedInt32Array(17, 16, 18), PackedInt32Array(18, 16, 19), PackedInt32Array(21, 20, 22), PackedInt32Array(22, 20, 23), PackedInt32Array(27, 26, 24), PackedInt32Array(24, 26, 25)]
 geometry_parsed_geometry_type = 1
 cell_size = 0.1
@@ -27,6 +30,9 @@ size = Vector3(0.125607, 1, 3.00551)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rfegi"]
 size = Vector3(2.01182, 1, 0.252521)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2egyu"]
+size = Vector3(3.01509, 0.200299, 3.01172)
 
 [node name="Game" type="Node3D"]
 
@@ -48,6 +54,7 @@ size = 3.0
 navigation_mesh = SubResource("NavigationMesh_jrn58")
 
 [node name="Physics" type="StaticBody3D" parent="Map/NavMesh"]
+collision_mask = 0
 
 [node name="Ground" type="CollisionShape3D" parent="Map/NavMesh/Physics"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0505218, 0)
@@ -105,6 +112,14 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1, 0, 
 [node name="tile_straight3" parent="Map/Visuals" instance=ExtResource("3_8buwl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
+[node name="MouseTarget" type="StaticBody3D" parent="Map"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Ground" type="CollisionShape3D" parent="Map/MouseTarget"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103367, 0)
+shape = SubResource("BoxShape3D_2egyu")
+
 [node name="EnemySpawn" type="Node3D" parent="." node_paths=PackedStringArray("enemyTarget")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.3, 1)
 script = ExtResource("4_t1qvh")
@@ -116,5 +131,9 @@ autostart = true
 
 [node name="EnemyEnd" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.3, -1)
+
+[node name="Input" type="Node" parent="."]
+script = ExtResource("6_m8tle")
+towerPrefab = ExtResource("7_mr3dc")
 
 [connection signal="timeout" from="EnemySpawn/Timer" to="EnemySpawn" method="TimerTick"]

@@ -18,7 +18,7 @@ public partial class Tower : Node3D
 
     private void BodyEntered(Node3D body)
     {
-        Health enemy = body.GetNode<Health>(body.GetPath() + "/Health");
+        Health enemy = body.GetNode<Health>("Health");
 
         if (enemy == null) return;
 
@@ -27,7 +27,7 @@ public partial class Tower : Node3D
 
     private void BodyExited(Node3D body)
     {
-        Health enemy = body.GetNode<Health>(body.GetPath() + "/Health");
+        Health enemy = body.GetNode<Health>("Health");
 
         if (enemy == null) return;
 
