@@ -6,8 +6,8 @@ public partial class TowerMenu : Control
     [Export] private Godot.Collections.Array<TowerConfig> towerConfigs;
     [Export] private PackedScene buttonPrefab;
 
-	[Export] private Economy economy;
-	[Export] private Container buttonContainer;
+    [Export] private Economy economy;
+    [Export] private Container buttonContainer;
 
     [Export] private float maxMouseRayDistance = 100;
 

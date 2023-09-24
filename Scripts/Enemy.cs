@@ -1,19 +1,21 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class Enemy : CharacterBody3D
 {
+    [Export] public float damage = 10;
     [Export] public int killReward = 10;
     [Export] public float speed = 5.0f;
 
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
     [Export] public NavigationAgent3D agent;
 
-    private Economy economy;
+    private Player player;
 
     public override void _Ready()
     {
-        economy = GetTree().CurrentScene.GetNode<Economy>("Economy");
+        player = GetTree().CurrentScene.GetNode<Player>("Player");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -33,14 +35,15 @@ public partial class Enemy : CharacterBody3D
 
     private void ReachedTarget()
     {
+        player.health.Damage(damage);
         QueueFree();
     }
 
-    private void OnDamageTaken(float amount, bool died)
+    private void OnDamageTaken(float currentHealth, float damageTaken)
     {
-        if (died)
+        if (currentHealth <= 0)
         {
-            economy.CurrentMoney += killReward;
+            player.economy.CurrentMoney += killReward;
             QueueFree();
         }
     }

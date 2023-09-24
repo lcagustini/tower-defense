@@ -3,20 +3,30 @@ using System;
 
 public partial class Health : Node
 {
-    [Signal] public delegate void OnDamageTakenEventHandler(float amount, bool died);
+    [Signal] public delegate void OnHealthChangeEventHandler(float currentHealth, float damageTaken);
 
-    [Export] public float maxHealth = 100;
-    public float currentHealth;
+    [Export] private float maxHealth = 100;
+
+    private float currentHealth;
+    public float CurrentHealth
+    {
+        get => currentHealth;
+        set
+        {
+            EmitSignal(SignalName.OnHealthChange, value, value - currentHealth);
+            currentHealth = value;
+        }
+    }
 
     public override void _Ready()
     {
-        currentHealth = maxHealth;
+        CurrentHealth = maxHealth;
     }
 
     public void Damage(float amount)
     {
-        currentHealth -= amount;
+        if (CurrentHealth <= 0) return;
 
-        EmitSignal(SignalName.OnDamageTaken, amount, currentHealth <= 0);
+        CurrentHealth -= amount;
     }
 }

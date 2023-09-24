@@ -5,6 +5,8 @@ public partial class Economy : Node
 {
     [Signal] public delegate void OnMoneyChangeEventHandler(int amount, int difference);
 
+    [Export] private int startingMoney;
+
     private int currentMoney;
     public int CurrentMoney
     {
@@ -18,6 +20,6 @@ public partial class Economy : Node
 
     public override void _Ready()
     {
-        CurrentMoney = 100;
+        CurrentMoney = startingMoney;
     }
 }

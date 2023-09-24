@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://c2vrh4sptnu32"]
+[gd_scene load_steps=26 format=3 uid="uid://c2vrh4sptnu32"]
 
 [ext_resource type="PackedScene" uid="uid://dco8of3a1dx4v" path="res://3D/tile_cornerSquare.glb" id="1_glyyv"]
 [ext_resource type="PackedScene" uid="uid://d2y4g8nd32kjh" path="res://3D/tile_endSpawn.glb" id="2_bieg0"]
@@ -6,11 +6,13 @@
 [ext_resource type="Script" path="res://Scripts/EnemySpawn.cs" id="4_t1qvh"]
 [ext_resource type="PackedScene" uid="uid://o64ll6y5xc3o" path="res://Prefabs/enemy.tscn" id="5_kmxfw"]
 [ext_resource type="Script" path="res://Scripts/Economy.cs" id="6_7xecf"]
+[ext_resource type="Script" path="res://Scripts/Player.cs" id="6_ivk2t"]
 [ext_resource type="Script" path="res://Scripts/UI/TowerMenu.cs" id="6_q61ke"]
+[ext_resource type="Script" path="res://Nodes/Health.cs" id="8_dplj1"]
 [ext_resource type="Theme" uid="uid://dic08vm21vqvg" path="res://Theme.tres" id="9_lpeot"]
 [ext_resource type="Resource" uid="uid://cwm76gli2uci3" path="res://Resources/Basic.tres" id="9_p02fj"]
+[ext_resource type="Script" path="res://Scripts/UI/PlayerDisplay.cs" id="9_wfjuw"]
 [ext_resource type="PackedScene" uid="uid://hpiers00bcp6" path="res://Prefabs/UI/towerButton.tscn" id="10_j1pbe"]
-[ext_resource type="Script" path="res://Scripts/UI/MoneyDisplay.cs" id="11_nwk7k"]
 
 [sub_resource type="Environment" id="Environment_canif"]
 ambient_light_energy = 0.1
@@ -51,6 +53,9 @@ size = Vector3(0.253231, 0, 2.00365)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cguqg"]
 size = Vector3(0.253231, 0, 2.00365)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hpn5b"]
+font_color = Color(1, 0.505882, 0, 1)
 
 [node name="Game" type="Node3D"]
 
@@ -101,6 +106,10 @@ shape = SubResource("BoxShape3D_rfegi")
 [node name="Wall6" type="CollisionShape3D" parent="Map/NavMesh/Physics"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.498382, 0.601932, -0.378083)
 shape = SubResource("BoxShape3D_rfegi")
+
+[node name="ParticlesCollision" type="GPUParticlesCollisionBox3D" parent="Map/NavMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.143087, 0)
+size = Vector3(3, 0.103232, 3)
 
 [node name="Visuals" type="Node3D" parent="Map"]
 
@@ -165,27 +174,38 @@ enemyPrefab = ExtResource("5_kmxfw")
 enemyTarget = NodePath("../EnemyEnd")
 
 [node name="Timer" type="Timer" parent="EnemySpawn"]
+wait_time = 1.5
 autostart = true
 
 [node name="EnemyEnd" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.3, -1)
 
-[node name="Economy" type="Node" parent="."]
+[node name="Player" type="Node3D" parent="." node_paths=PackedStringArray("economy", "health")]
+script = ExtResource("6_ivk2t")
+economy = NodePath("Economy")
+health = NodePath("Health")
+
+[node name="Economy" type="Node" parent="Player"]
 script = ExtResource("6_7xecf")
+startingMoney = 40
+
+[node name="Health" type="Node" parent="Player"]
+script = ExtResource("8_dplj1")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="MoneyDisplay" type="Control" parent="UI" node_paths=PackedStringArray("moneyAmount")]
+[node name="PlayerDisplay" type="Control" parent="UI" node_paths=PackedStringArray("moneyAmount", "healthAmount")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("11_nwk7k")
-moneyAmount = NodePath("VBoxContainer/Amount")
+script = ExtResource("9_wfjuw")
+moneyAmount = NodePath("VBoxContainer/MoneyAmount")
+healthAmount = NodePath("VBoxContainer/HealthAmount")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MoneyDisplay"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PlayerDisplay"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -195,15 +215,30 @@ grow_horizontal = 2
 mouse_filter = 2
 alignment = 1
 
-[node name="Title" type="Label" parent="UI/MoneyDisplay/VBoxContainer"]
+[node name="HealthTitle" type="Label" parent="UI/PlayerDisplay/VBoxContainer"]
 layout_mode = 2
-text = "Money"
+text = "Health"
+label_settings = SubResource("LabelSettings_hpn5b")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Amount" type="Label" parent="UI/MoneyDisplay/VBoxContainer"]
+[node name="HealthAmount" type="Label" parent="UI/PlayerDisplay/VBoxContainer"]
 layout_mode = 2
-text = "0000"
+text = "000
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MoneyTitle" type="Label" parent="UI/PlayerDisplay/VBoxContainer"]
+layout_mode = 2
+text = "Money"
+label_settings = SubResource("LabelSettings_hpn5b")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MoneyAmount" type="Label" parent="UI/PlayerDisplay/VBoxContainer"]
+layout_mode = 2
+text = "$000"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -217,7 +252,7 @@ grow_vertical = 2
 script = ExtResource("6_q61ke")
 towerConfigs = Array[Resource]([ExtResource("9_p02fj")])
 buttonPrefab = ExtResource("10_j1pbe")
-economy = NodePath("../../Economy")
+economy = NodePath("../../Player/Economy")
 buttonContainer = NodePath("MarginContainer/HBoxContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/TowerMenu"]
@@ -234,4 +269,6 @@ layout_mode = 2
 theme = ExtResource("9_lpeot")
 
 [connection signal="timeout" from="EnemySpawn/Timer" to="EnemySpawn" method="TimerTick"]
-[connection signal="OnMoneyChange" from="Economy" to="UI/MoneyDisplay" method="OnMoneyChange"]
+[connection signal="OnMoneyChange" from="Player/Economy" to="UI/PlayerDisplay" method="OnMoneyChange"]
+[connection signal="OnHealthChange" from="Player/Health" to="UI/PlayerDisplay" method="OnHealthChange"]
+[connection signal="OnHealthChange" from="Player/Health" to="Player" method="OnDamageTaken"]
