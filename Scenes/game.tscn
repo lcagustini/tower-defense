@@ -1,13 +1,16 @@
-[gd_scene load_steps=15 format=3 uid="uid://c2vrh4sptnu32"]
+[gd_scene load_steps=23 format=3 uid="uid://c2vrh4sptnu32"]
 
 [ext_resource type="PackedScene" uid="uid://dco8of3a1dx4v" path="res://3D/tile_cornerSquare.glb" id="1_glyyv"]
 [ext_resource type="PackedScene" uid="uid://d2y4g8nd32kjh" path="res://3D/tile_endSpawn.glb" id="2_bieg0"]
 [ext_resource type="PackedScene" uid="uid://db2tnw8pnu7yl" path="res://3D/tile_straight.glb" id="3_8buwl"]
 [ext_resource type="Script" path="res://Scripts/EnemySpawn.cs" id="4_t1qvh"]
 [ext_resource type="PackedScene" uid="uid://o64ll6y5xc3o" path="res://Prefabs/enemy.tscn" id="5_kmxfw"]
-[ext_resource type="Script" path="res://Scripts/Input.cs" id="6_m8tle"]
+[ext_resource type="Script" path="res://Scripts/Economy.cs" id="6_7xecf"]
+[ext_resource type="Script" path="res://Scripts/UI/TowerMenu.cs" id="6_q61ke"]
 [ext_resource type="PackedScene" uid="uid://0njne00qcypp" path="res://Prefabs/tower.tscn" id="7_mr3dc"]
-[ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="8_c3voc"]
+[ext_resource type="Theme" uid="uid://dic08vm21vqvg" path="res://Theme.tres" id="9_lpeot"]
+[ext_resource type="Texture2D" uid="uid://dfocwyrb8s3ev" path="res://2D/Side/towerSquare_roofA.png" id="10_qfdkc"]
+[ext_resource type="Script" path="res://Scripts/UI/MoneyDisplay.cs" id="11_nwk7k"]
 
 [sub_resource type="Environment" id="Environment_canif"]
 ambient_light_energy = 0.1
@@ -32,7 +35,22 @@ size = Vector3(0.125607, 1, 3.00551)
 size = Vector3(2.01182, 1, 0.252521)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2egyu"]
-size = Vector3(3.01509, 0.200299, 3.01172)
+size = Vector3(0.130424, 0, 3.012)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_powx5"]
+size = Vector3(3.015, 0, 0.126369)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vkccd"]
+size = Vector3(0.130423, 0, 3.012)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xg8be"]
+size = Vector3(3.015, 0, 0.127905)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_civf5"]
+size = Vector3(0.253231, 0, 2.00365)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cguqg"]
+size = Vector3(0.253231, 0, 2.00365)
 
 [node name="Game" type="Node3D"]
 
@@ -112,13 +130,33 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1, 0, 
 [node name="tile_straight3" parent="Map/Visuals" instance=ExtResource("3_8buwl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
-[node name="MouseTarget" type="StaticBody3D" parent="Map"]
+[node name="BuildableSpace" type="StaticBody3D" parent="Map"]
 collision_layer = 4
 collision_mask = 0
 
-[node name="Ground" type="CollisionShape3D" parent="Map/MouseTarget"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103367, 0)
+[node name="Ground1" type="CollisionShape3D" parent="Map/BuildableSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.44059, 0.200804, 0)
 shape = SubResource("BoxShape3D_2egyu")
+
+[node name="Ground2" type="CollisionShape3D" parent="Map/BuildableSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200804, -1.44059)
+shape = SubResource("BoxShape3D_powx5")
+
+[node name="Ground3" type="CollisionShape3D" parent="Map/BuildableSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.44059, 0.200804, 0)
+shape = SubResource("BoxShape3D_vkccd")
+
+[node name="Ground4" type="CollisionShape3D" parent="Map/BuildableSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200804, 1.44059)
+shape = SubResource("BoxShape3D_xg8be")
+
+[node name="Ground5" type="CollisionShape3D" parent="Map/BuildableSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.50312, 0.200804, 0.376436)
+shape = SubResource("BoxShape3D_civf5")
+
+[node name="Ground6" type="CollisionShape3D" parent="Map/BuildableSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.499501, 0.200804, -0.376435)
+shape = SubResource("BoxShape3D_cguqg")
 
 [node name="EnemySpawn" type="Node3D" parent="." node_paths=PackedStringArray("enemyTarget")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.3, 1)
@@ -132,10 +170,68 @@ autostart = true
 [node name="EnemyEnd" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.3, -1)
 
-[node name="Input" type="Node" parent="."]
-script = ExtResource("6_m8tle")
-towerPrefab = ExtResource("7_mr3dc")
+[node name="Economy" type="Node" parent="."]
+script = ExtResource("6_7xecf")
 
-[node name="FPSMenu" parent="." instance=ExtResource("8_c3voc")]
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TowerMenu" type="Control" parent="UI" node_paths=PackedStringArray("economy")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_q61ke")
+towerPrefab = ExtResource("7_mr3dc")
+economy = NodePath("../../Economy")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/TowerMenu"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -262.0
+offset_bottom = 140.0
+grow_horizontal = 2
+theme = ExtResource("9_lpeot")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/TowerMenu/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("9_lpeot")
+
+[node name="Button" type="Button" parent="UI/TowerMenu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("9_lpeot")
+icon = ExtResource("10_qfdkc")
+
+[node name="MoneyDisplay" type="Control" parent="UI" node_paths=PackedStringArray("moneyAmount")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("11_nwk7k")
+moneyAmount = NodePath("VBoxContainer/Amount")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MoneyDisplay"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1658.0
+offset_bottom = 140.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="UI/MoneyDisplay/VBoxContainer"]
+layout_mode = 2
+text = "Money"
+horizontal_alignment = 1
+
+[node name="Amount" type="Label" parent="UI/MoneyDisplay/VBoxContainer"]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 1
 
 [connection signal="timeout" from="EnemySpawn/Timer" to="EnemySpawn" method="TimerTick"]
+[connection signal="OnMoneyChange" from="Economy" to="UI/MoneyDisplay" method="OnMoneyChange"]
