@@ -1,26 +1,26 @@
 [gd_scene load_steps=6 format=3 uid="uid://0njne00qcypp"]
 
-[ext_resource type="PackedScene" uid="uid://w58l3haigieg" path="res://3D/towerSquare_bottomA.glb" id="1_hi751"]
-[ext_resource type="Script" path="res://Scripts/Tower.cs" id="1_vjmne"]
-[ext_resource type="PackedScene" uid="uid://gjcvcpsufy53" path="res://3D/towerSquare_middleA.glb" id="2_0madp"]
-[ext_resource type="PackedScene" uid="uid://du18twc6tqm7d" path="res://3D/towerSquare_roofA.glb" id="3_ovqwb"]
+[ext_resource type="Script" path="res://Scripts/Tower.cs" id="1_cudir"]
+[ext_resource type="PackedScene" uid="uid://w58l3haigieg" path="res://3D/towerSquare_bottomA.glb" id="2_xq2y1"]
+[ext_resource type="PackedScene" uid="uid://gjcvcpsufy53" path="res://3D/towerSquare_middleA.glb" id="3_4wi0i"]
+[ext_resource type="PackedScene" uid="uid://du18twc6tqm7d" path="res://3D/towerSquare_roofA.glb" id="4_tf128"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_fjp8g"]
 radius = 1.0
 
 [node name="Tower" type="Node3D"]
-script = ExtResource("1_vjmne")
+script = ExtResource("1_cudir")
 damageAmount = 50.0
 
 [node name="Visuals" type="Node3D" parent="."]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
-[node name="towerSquare_bottomA" parent="Visuals" instance=ExtResource("1_hi751")]
+[node name="towerSquare_bottomA" parent="Visuals" instance=ExtResource("2_xq2y1")]
 
-[node name="towerSquare_middleA" parent="Visuals" instance=ExtResource("2_0madp")]
+[node name="towerSquare_middleA" parent="Visuals" instance=ExtResource("3_4wi0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="towerSquare_roofA" parent="Visuals" instance=ExtResource("3_ovqwb")]
+[node name="towerSquare_roofA" parent="Visuals" instance=ExtResource("4_tf128")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Area3D" type="Area3D" parent="."]

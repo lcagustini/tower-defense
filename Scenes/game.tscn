@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://o64ll6y5xc3o" path="res://Prefabs/enemy.tscn" id="5_kmxfw"]
 [ext_resource type="Script" path="res://Scripts/Economy.cs" id="6_7xecf"]
 [ext_resource type="Script" path="res://Scripts/UI/TowerMenu.cs" id="6_q61ke"]
-[ext_resource type="PackedScene" uid="uid://0njne00qcypp" path="res://Prefabs/tower.tscn" id="7_mr3dc"]
 [ext_resource type="Theme" uid="uid://dic08vm21vqvg" path="res://Theme.tres" id="9_lpeot"]
-[ext_resource type="Texture2D" uid="uid://dfocwyrb8s3ev" path="res://2D/Side/towerSquare_roofA.png" id="10_qfdkc"]
+[ext_resource type="Resource" uid="uid://cwm76gli2uci3" path="res://Resources/Basic.tres" id="9_p02fj"]
+[ext_resource type="PackedScene" uid="uid://hpiers00bcp6" path="res://Prefabs/UI/towerButton.tscn" id="10_j1pbe"]
 [ext_resource type="Script" path="res://Scripts/UI/MoneyDisplay.cs" id="11_nwk7k"]
 
 [sub_resource type="Environment" id="Environment_canif"]
@@ -175,35 +175,6 @@ script = ExtResource("6_7xecf")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="TowerMenu" type="Control" parent="UI" node_paths=PackedStringArray("economy")]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("6_q61ke")
-towerPrefab = ExtResource("7_mr3dc")
-economy = NodePath("../../Economy")
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/TowerMenu"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_right = -262.0
-offset_bottom = 140.0
-grow_horizontal = 2
-theme = ExtResource("9_lpeot")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/TowerMenu/MarginContainer"]
-layout_mode = 2
-theme = ExtResource("9_lpeot")
-
-[node name="Button" type="Button" parent="UI/TowerMenu/MarginContainer/HBoxContainer"]
-layout_mode = 2
-theme = ExtResource("9_lpeot")
-icon = ExtResource("10_qfdkc")
-
 [node name="MoneyDisplay" type="Control" parent="UI" node_paths=PackedStringArray("moneyAmount")]
 layout_mode = 3
 anchors_preset = 15
@@ -221,17 +192,46 @@ anchor_right = 1.0
 offset_left = 1658.0
 offset_bottom = 140.0
 grow_horizontal = 2
+mouse_filter = 2
 alignment = 1
 
 [node name="Title" type="Label" parent="UI/MoneyDisplay/VBoxContainer"]
 layout_mode = 2
 text = "Money"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Amount" type="Label" parent="UI/MoneyDisplay/VBoxContainer"]
 layout_mode = 2
 text = "0000"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TowerMenu" type="Control" parent="UI" node_paths=PackedStringArray("economy", "buttonContainer")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_q61ke")
+towerConfigs = Array[Resource]([ExtResource("9_p02fj")])
+buttonPrefab = ExtResource("10_j1pbe")
+economy = NodePath("../../Economy")
+buttonContainer = NodePath("MarginContainer/HBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/TowerMenu"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -262.0
+offset_bottom = 140.0
+grow_horizontal = 2
+theme = ExtResource("9_lpeot")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/TowerMenu/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("9_lpeot")
 
 [connection signal="timeout" from="EnemySpawn/Timer" to="EnemySpawn" method="TimerTick"]
 [connection signal="OnMoneyChange" from="Economy" to="UI/MoneyDisplay" method="OnMoneyChange"]

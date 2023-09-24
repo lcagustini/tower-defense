@@ -7,6 +7,6 @@ public partial class MoneyDisplay : Node
 
 	public void OnMoneyChange(int amount, int difference)
 	{
-		moneyAmount.Text = amount.ToString();
+		moneyAmount.Text = $"${amount}";
 	}
 }

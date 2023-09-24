@@ -3,10 +3,18 @@ using System;
 
 public partial class Enemy : CharacterBody3D
 {
+    [Export] public int killReward = 10;
     [Export] public float speed = 5.0f;
 
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
     [Export] public NavigationAgent3D agent;
+
+    private Economy economy;
+
+    public override void _Ready()
+    {
+        economy = GetTree().CurrentScene.GetNode<Economy>("Economy");
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -30,6 +38,10 @@ public partial class Enemy : CharacterBody3D
 
     private void OnDamageTaken(float amount, bool died)
     {
-        if (died) QueueFree();
+        if (died)
+        {
+            economy.CurrentMoney += killReward;
+            QueueFree();
+        }
     }
 }
