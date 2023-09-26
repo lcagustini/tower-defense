@@ -1,13 +1,16 @@
 using Godot;
+using Godot.Collections;
 using System;
-using System.Collections.Generic;
 
 public partial class EnemySpawn : Node3D
 {
-	[Export] private PackedScene enemyPrefab;
+    [Export] private Array<WaveConfig> waveConfigs;
+    private int currentWave;
+
+    [Export] private PackedScene enemyPrefab;
     [Export] private Node3D enemyTarget;
 
-    private void TimerTick()
+    private void SpawnEnemy()
     {
         Enemy enemy = enemyPrefab.Instantiate<Enemy>();
         GetTree().CurrentScene.AddChild(enemy);

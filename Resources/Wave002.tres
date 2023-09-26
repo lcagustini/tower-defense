@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cmc28b7syf85y"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/WaveConfig.cs" id="1_r3dcm"]
+
+[resource]
+script = ExtResource("1_r3dcm")
+spawns = Array[int]([0, 0, 0, 0, 0, 0, 0])
