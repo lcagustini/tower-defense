@@ -1,0 +1,87 @@
+[gd_scene load_steps=9 format=3 uid="uid://ocwtxs22vldn"]
+
+[ext_resource type="PackedScene" uid="uid://bp7a62l373a75" path="res://3D/detail_crystal.glb" id="1_3bvui"]
+[ext_resource type="Script" path="res://Scripts/Rotate.cs" id="1_ty7v8"]
+[ext_resource type="Theme" uid="uid://dic08vm21vqvg" path="res://Theme.tres" id="3_600ul"]
+[ext_resource type="Texture2D" uid="uid://v4e1iyph32ad" path="res://2D/logo.png" id="3_elne8"]
+[ext_resource type="Script" path="res://Scripts/UI/MainMenu.cs" id="5_cwmqn"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eghxh"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_rsf1m"]
+sky_material = SubResource("ProceduralSkyMaterial_eghxh")
+
+[sub_resource type="Environment" id="Environment_rlgg1"]
+sky = SubResource("Sky_rsf1m")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="MainMenu" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rlgg1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.85137, 0.524566, 0, -0.524566, 0.85137, 0, 0.472504, 0.441274)
+fov = 40.0
+
+[node name="Rotate" type="Node3D" parent="."]
+script = ExtResource("1_ty7v8")
+axis = Vector3(0, 1, 0)
+speed = 1.0
+
+[node name="detail_crystal" parent="Rotate" instance=ExtResource("1_3bvui")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Logo" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_600ul")
+
+[node name="Texture" type="TextureRect" parent="UI/Logo"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 542.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_600ul")
+texture = ExtResource("3_elne8")
+
+[node name="MainMenu" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_600ul")
+script = ExtResource("5_cwmqn")
+
+[node name="Button" type="Button" parent="UI/MainMenu"]
+layout_mode = 2
+offset_left = 863.0
+offset_top = 924.0
+offset_right = 1057.0
+offset_bottom = 1012.0
+theme = ExtResource("3_600ul")
+text = "Start"
+
+[connection signal="pressed" from="UI/MainMenu/Button" to="UI/MainMenu" method="StartGame"]
