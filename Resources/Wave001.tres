@@ -1,7 +1,8 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cr8ngeafj5uic"]
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://br8aaqxqxl4c1"]
 
 [ext_resource type="Script" path="res://Scripts/Resources/WaveConfig.cs" id="1_8egqo"]
+[ext_resource type="Resource" uid="uid://cvmxyo6cu16u" path="res://Resources/BasicEnemy.tres" id="2_h4lmm"]
 
 [resource]
 script = ExtResource("1_8egqo")
-spawns = Array[int]([0, 0, 0])
+spawns = Array[Resource]([ExtResource("2_h4lmm")])

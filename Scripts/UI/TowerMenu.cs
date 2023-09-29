@@ -1,9 +1,10 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 public partial class TowerMenu : Control
 {
-    [Export] private Godot.Collections.Array<TowerConfig> towerConfigs;
+    [Export] private Array<TowerConfig> towerConfigs;
     [Export] private PackedScene buttonPrefab;
 
     [Export] private Economy economy;

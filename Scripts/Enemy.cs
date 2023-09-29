@@ -13,6 +13,8 @@ public partial class Enemy : CharacterBody3D
 
     private Player player;
 
+    public Action<Enemy> OnDespawnCallback;
+
     public override void _Ready()
     {
         player = GetTree().CurrentScene.GetNode<Player>("Player");
@@ -36,7 +38,7 @@ public partial class Enemy : CharacterBody3D
     private void ReachedTarget()
     {
         player.health.Damage(damage);
-        QueueFree();
+        Despawn();
     }
 
     private void OnDamageTaken(float currentHealth, float damageTaken)
@@ -44,7 +46,13 @@ public partial class Enemy : CharacterBody3D
         if (currentHealth <= 0)
         {
             player.economy.CurrentMoney += killReward;
-            QueueFree();
+            Despawn();
         }
+    }
+
+    private void Despawn()
+    {
+        OnDespawnCallback?.Invoke(this);
+        QueueFree();
     }
 }

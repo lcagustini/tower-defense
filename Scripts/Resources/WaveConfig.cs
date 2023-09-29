@@ -4,5 +4,5 @@ using System;
 
 public partial class WaveConfig : Resource
 {
-    [Export] public Array<TowerType> spawns;
+    [Export] public Array<EnemyConfig> spawns;
 }

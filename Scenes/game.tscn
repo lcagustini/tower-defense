@@ -1,20 +1,18 @@
-[gd_scene load_steps=28 format=3 uid="uid://c2vrh4sptnu32"]
+[gd_scene load_steps=26 format=3 uid="uid://c2vrh4sptnu32"]
 
 [ext_resource type="PackedScene" uid="uid://dco8of3a1dx4v" path="res://3D/tile_cornerSquare.glb" id="1_glyyv"]
 [ext_resource type="PackedScene" uid="uid://d2y4g8nd32kjh" path="res://3D/tile_endSpawn.glb" id="2_bieg0"]
 [ext_resource type="PackedScene" uid="uid://db2tnw8pnu7yl" path="res://3D/tile_straight.glb" id="3_8buwl"]
 [ext_resource type="Script" path="res://Scripts/EnemySpawn.cs" id="4_t1qvh"]
-[ext_resource type="PackedScene" uid="uid://o64ll6y5xc3o" path="res://Prefabs/enemy.tscn" id="5_kmxfw"]
-[ext_resource type="Resource" uid="uid://cr8ngeafj5uic" path="res://Resources/Wave001.tres" id="5_njly0"]
+[ext_resource type="Resource" uid="uid://br8aaqxqxl4c1" path="res://Resources/Wave001.tres" id="5_njly0"]
 [ext_resource type="Script" path="res://Scripts/Economy.cs" id="6_7xecf"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="6_ivk2t"]
-[ext_resource type="Resource" uid="uid://cmc28b7syf85y" path="res://Resources/Wave002.tres" id="6_jlc3m"]
 [ext_resource type="Script" path="res://Scripts/UI/TowerMenu.cs" id="6_q61ke"]
 [ext_resource type="Script" path="res://Nodes/Health.cs" id="8_dplj1"]
 [ext_resource type="Theme" uid="uid://dic08vm21vqvg" path="res://Theme.tres" id="9_lpeot"]
-[ext_resource type="Resource" uid="uid://cwm76gli2uci3" path="res://Resources/Basic.tres" id="9_p02fj"]
 [ext_resource type="Script" path="res://Scripts/UI/PlayerDisplay.cs" id="9_wfjuw"]
 [ext_resource type="PackedScene" uid="uid://hpiers00bcp6" path="res://Prefabs/UI/towerButton.tscn" id="10_j1pbe"]
+[ext_resource type="Resource" uid="uid://cwm76gli2uci3" path="res://Resources/BasicTower.tres" id="12_2xenk"]
 
 [sub_resource type="Environment" id="Environment_canif"]
 ambient_light_energy = 0.1
@@ -172,13 +170,8 @@ shape = SubResource("BoxShape3D_cguqg")
 [node name="EnemySpawn" type="Node3D" parent="Map" node_paths=PackedStringArray("enemyTarget")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.3, 1)
 script = ExtResource("4_t1qvh")
-waveConfigs = Array[Resource]([ExtResource("5_njly0"), ExtResource("6_jlc3m")])
-enemyPrefab = ExtResource("5_kmxfw")
+waveConfigs = Array[Resource]([ExtResource("5_njly0"), ExtResource("5_njly0"), ExtResource("5_njly0"), ExtResource("5_njly0")])
 enemyTarget = NodePath("../EnemyEnd")
-
-[node name="Timer" type="Timer" parent="Map/EnemySpawn"]
-wait_time = 1.5
-autostart = true
 
 [node name="EnemyEnd" type="Node3D" parent="Map"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.3, -1)
@@ -253,7 +246,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("6_q61ke")
-towerConfigs = Array[Resource]([ExtResource("9_p02fj")])
+towerConfigs = Array[Resource]([ExtResource("12_2xenk")])
 buttonPrefab = ExtResource("10_j1pbe")
 economy = NodePath("../../Player/Economy")
 buttonContainer = NodePath("MarginContainer/HBoxContainer")
@@ -271,7 +264,6 @@ theme = ExtResource("9_lpeot")
 layout_mode = 2
 theme = ExtResource("9_lpeot")
 
-[connection signal="timeout" from="Map/EnemySpawn/Timer" to="Map/EnemySpawn" method="SpawnEnemy"]
 [connection signal="OnMoneyChange" from="Player/Economy" to="UI/PlayerDisplay" method="OnMoneyChange"]
 [connection signal="OnHealthChange" from="Player/Health" to="Player" method="OnDamageTaken"]
 [connection signal="OnHealthChange" from="Player/Health" to="UI/PlayerDisplay" method="OnHealthChange"]

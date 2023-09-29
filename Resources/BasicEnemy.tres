@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cvmxyo6cu16u"]
+
+[ext_resource type="PackedScene" uid="uid://o64ll6y5xc3o" path="res://Prefabs/enemy.tscn" id="1_jms1y"]
+[ext_resource type="Script" path="res://Scripts/Resources/EnemyConfig.cs" id="1_k4lk8"]
+
+[resource]
+script = ExtResource("1_k4lk8")
+type = 0
+prefab = ExtResource("1_jms1y")

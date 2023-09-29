@@ -16,6 +16,9 @@ public partial class CustomNodes : EditorPlugin
 
         script = GD.Load<Script>("Scripts/Resources/WaveConfig.cs");
         AddCustomType("WaveConfig", "Resource", script, null);
+
+        script = GD.Load<Script>("Scripts/Resources/EnemyConfig.cs");
+        AddCustomType("EnemyConfig", "Resource", script, null);
     }
 
     public override void _ExitTree()
@@ -23,6 +26,7 @@ public partial class CustomNodes : EditorPlugin
         RemoveCustomType("Health");
         RemoveCustomType("TowerConfig");
         RemoveCustomType("WaveConfig");
+        RemoveCustomType("EnemyConfig");
     }
 }
 #endif
